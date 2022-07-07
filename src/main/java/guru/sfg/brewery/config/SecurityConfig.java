@@ -59,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("spring")
-                .password("{bcrypt}$2a$10$EVenT/GrK2A29r0IJJhdmOk6zQL20y29tyd80Owu4b2vFEqRH/z1m")
+                .password("{bcrypt10}$2a$10$EVenT/GrK2A29r0IJJhdmOk6zQL20y29tyd80Owu4b2vFEqRH/z1m")
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
@@ -67,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles("USER")
                 .and()
                 .withUser("scott")
-                .password("{ldap}{SSHA}X8cV6Ptzuw6XaDAjbV69PX8lIu+tjmGiRMDiNQ==")
+                .password("{bcrypt15}$2a$10$72Y.g0GQEhKvVw9EQ8Yfc..Afj7nJ2mCupZDx2jrI2dbNPZFHENg6")
                 .roles("CUSTOMER");
     }
 
