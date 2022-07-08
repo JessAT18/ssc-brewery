@@ -11,22 +11,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class BreweryControllerIT extends BaseIT {
 
     @Test
-    void findBreweriesCustomerRole() throws Exception {
+    void listBreweriesCustomerRole() throws Exception {
         mockMvc.perform(get("/brewery/breweries")
                         .with(httpBasic("scott", "tiger")))
                 .andExpect(status().is2xxSuccessful());
     }
 
     @Test
-    void findBreweriesAdminRole() throws Exception {
+    void listBreweriesAdminRole() throws Exception {
         mockMvc.perform(get("/brewery/breweries")
                         .with(httpBasic("spring", "guru")))
-                .andExpect(status().isForbidden());
+                .andExpect(status().is2xxSuccessful());
 
     }
 
     @Test
-    void findBreweriesUserRole() throws Exception {
+    void listBreweriesUserRole() throws Exception {
         mockMvc.perform(get("/brewery/breweries")
                         .with(httpBasic("user", "password")))
                 .andExpect(status().isForbidden());
@@ -34,7 +34,7 @@ public class BreweryControllerIT extends BaseIT {
     }
 
     @Test
-    void findBreweriesNoAuth() throws Exception {
+    void listBreweriesNoAuth() throws Exception {
         mockMvc.perform(get("/brewery/breweries"))
                 .andExpect(status().isUnauthorized());
     }
@@ -51,7 +51,7 @@ public class BreweryControllerIT extends BaseIT {
     void getBreweriesJsonAdminRole() throws Exception {
         mockMvc.perform(get("/brewery/api/v1/breweries")
                         .with(httpBasic("spring", "guru")))
-                .andExpect(status().isForbidden());
+                .andExpect(status().is2xxSuccessful());
 
     }
 
