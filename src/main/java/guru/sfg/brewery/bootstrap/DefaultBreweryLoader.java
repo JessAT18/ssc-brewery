@@ -40,9 +40,9 @@ import java.util.UUID;
 /**
  * Created by jt on 2019-01-26.
  */
+@Slf4j
 @RequiredArgsConstructor
 @Component
-@Slf4j
 public class DefaultBreweryLoader implements CommandLineRunner {
 
     public static final String TASTING_ROOM = "Tasting Room";
@@ -50,8 +50,8 @@ public class DefaultBreweryLoader implements CommandLineRunner {
     public static final String DUNEDIN_DISTRIBUTING = "Dunedin Distributing";
     public static final String KEY_WEST_DISTRIBUTORS = "Key West Distributors";
     public static final String STPETE_USER = "stpete";
-    public static final String DUNEDIN_USER = "stpete";
-    public static final String KEYWEST_USER = "stpete";
+    public static final String DUNEDIN_USER = "dunedin";
+    public static final String KEYWEST_USER = "keywest";
 
     public static final String BEER_1_UPC = "0631234200036";
     public static final String BEER_2_UPC = "0631234300019";
@@ -62,7 +62,6 @@ public class DefaultBreweryLoader implements CommandLineRunner {
     private final BeerInventoryRepository beerInventoryRepository;
     private final BeerOrderRepository beerOrderRepository;
     private final CustomerRepository customerRepository;
-
     private final AuthorityRepository authorityRepository;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
@@ -96,17 +95,17 @@ public class DefaultBreweryLoader implements CommandLineRunner {
                 .build());
 
         //create users
-        User stPeteUser = userRepository.save(User.builder().username("stpete")
+        User stPeteUser = userRepository.save(User.builder().username(STPETE_USER)
                 .password(passwordEncoder.encode("password"))
                 .customer(stPeteCustomer)
                 .role(customerRole).build());
 
-        User dunedinUser = userRepository.save(User.builder().username("dunedin")
+        User dunedinUser = userRepository.save(User.builder().username(DUNEDIN_USER)
                 .password(passwordEncoder.encode("password"))
                 .customer(dunedinCustomer)
                 .role(customerRole).build());
 
-        User keywest = userRepository.save(User.builder().username("keywest")
+        User keywest = userRepository.save(User.builder().username(KEYWEST_USER)
                 .password(passwordEncoder.encode("password"))
                 .customer(keyWestCustomer)
                 .role(customerRole).build());
@@ -129,6 +128,7 @@ public class DefaultBreweryLoader implements CommandLineRunner {
                         .build()))
                 .build());
     }
+
 
     private void loadTastingRoomData() {
         Customer tastingRoom = Customer.builder()
@@ -202,7 +202,6 @@ public class DefaultBreweryLoader implements CommandLineRunner {
         }
     }
 
-
     private void loadSecurityData() {
         //beer auths
         Authority createBeer = authorityRepository.save(Authority.builder().permission("beer.create").build());
@@ -216,19 +215,17 @@ public class DefaultBreweryLoader implements CommandLineRunner {
         Authority updateCustomer = authorityRepository.save(Authority.builder().permission("customer.update").build());
         Authority deleteCustomer = authorityRepository.save(Authority.builder().permission("customer.delete").build());
 
-        //brewery auths
+        //customer brewery
         Authority createBrewery = authorityRepository.save(Authority.builder().permission("brewery.create").build());
         Authority readBrewery = authorityRepository.save(Authority.builder().permission("brewery.read").build());
         Authority updateBrewery = authorityRepository.save(Authority.builder().permission("brewery.update").build());
         Authority deleteBrewery = authorityRepository.save(Authority.builder().permission("brewery.delete").build());
 
-        //beer order auths
+        //beer order
         Authority createOrder = authorityRepository.save(Authority.builder().permission("order.create").build());
         Authority readOrder = authorityRepository.save(Authority.builder().permission("order.read").build());
         Authority updateOrder = authorityRepository.save(Authority.builder().permission("order.update").build());
         Authority deleteOrder = authorityRepository.save(Authority.builder().permission("order.delete").build());
-
-        //beer order auths
         Authority createOrderCustomer = authorityRepository.save(Authority.builder().permission("customer.order.create").build());
         Authority readOrderCustomer = authorityRepository.save(Authority.builder().permission("customer.order.read").build());
         Authority updateOrderCustomer = authorityRepository.save(Authority.builder().permission("customer.order.update").build());
@@ -238,14 +235,12 @@ public class DefaultBreweryLoader implements CommandLineRunner {
         Role customerRole = roleRepository.save(Role.builder().name("CUSTOMER").build());
         Role userRole = roleRepository.save(Role.builder().name("USER").build());
 
-        adminRole.setAuthorities(new HashSet<>(Set.of(createBeer, updateBeer, readBeer, deleteBeer,
-                createCustomer, updateCustomer, readCustomer, deleteCustomer,
-                createBrewery, updateBrewery, readBrewery, deleteBrewery,
-                createOrder, updateOrder, readOrder, deleteOrder,
-                createOrderCustomer, updateOrderCustomer, readOrderCustomer, deleteOrderCustomer)));
+        adminRole.setAuthorities(new HashSet<>(Set.of(createBeer, updateBeer, readBeer, deleteBeer, createCustomer, readCustomer,
+                updateCustomer, deleteCustomer, createBrewery, readBrewery, updateBrewery, deleteBrewery,
+                createOrder, readOrder, updateOrder, deleteOrder)));
 
-        customerRole.setAuthorities(new HashSet<>(Set.of(readBeer, readCustomer, readBrewery,
-                createOrderCustomer, readOrderCustomer, updateOrderCustomer, deleteOrderCustomer)));
+        customerRole.setAuthorities(new HashSet<>(Set.of(readBeer, readCustomer, readBrewery, createOrderCustomer, readOrderCustomer,
+                updateOrderCustomer, deleteOrderCustomer)));
 
         userRole.setAuthorities(new HashSet<>(Set.of(readBeer)));
 
@@ -263,7 +258,6 @@ public class DefaultBreweryLoader implements CommandLineRunner {
                 .role(userRole)
                 .build());
 
-//        User user =
         userRepository.save(User.builder()
                 .username("scott")
                 .password(passwordEncoder.encode("tiger"))
@@ -271,9 +265,6 @@ public class DefaultBreweryLoader implements CommandLineRunner {
                 .build());
 
         log.debug("Users Loaded: " + userRepository.count());
-
-//        user.getAuthorities().forEach(authority -> {
-//            System.out.println(authority.getPermission());
-//        });
     }
+
 }

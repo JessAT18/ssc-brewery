@@ -32,14 +32,14 @@ import java.util.UUID;
 public class BeerOrderDto extends BaseItem {
 
     @Builder
-    public BeerOrderDto(UUID id, Integer version, OffsetDateTime createdDate, OffsetDateTime lastModifiedDate, UUID customerId, List<BeerOrderLineDto> beerOrderLines,
-                        OrderStatusEnum orderStatus, String orderStatusCallbackUrl, String customerRef) {
+    public BeerOrderDto(UUID id, Integer version, OffsetDateTime createdDate, OffsetDateTime lastModifiedDate, String customerRef, UUID customerId, List<BeerOrderLineDto> beerOrderLines,
+                        OrderStatusEnum orderStatus, String orderStatusCallbackUrl) {
         super(id, version, createdDate, lastModifiedDate);
+        this.customerRef = customerRef;
         this.customerId = customerId;
         this.beerOrderLines = beerOrderLines;
         this.orderStatus = orderStatus;
         this.orderStatusCallbackUrl = orderStatusCallbackUrl;
-        this.customerRef = customerRef;
     }
 
     private UUID customerId;
