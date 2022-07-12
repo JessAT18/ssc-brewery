@@ -39,5 +39,5 @@ public class BeerOrderLineDto extends BaseItem {
     }
 
     private UUID beerId;
-    private Integer orderQuantity = 0;
+    public Integer orderQuantity = 0;
 }

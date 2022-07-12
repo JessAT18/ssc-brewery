@@ -24,6 +24,9 @@ import org.mapstruct.*;
 @Mapper(uses = {DateMapper.class})
 @DecoratedWith(BeerOrderLineMapperDecorator.class)
 public interface BeerOrderLineMapper {
+    @Mappings({
+            @Mapping(source = "orderQuantity", target = "orderQuantity")
+    })
     BeerOrderLineDto beerOrderLineToDto(BeerOrderLine line);
     @Mappings({
             @Mapping(target = "beerOrder", ignore = true),

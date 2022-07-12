@@ -52,6 +52,6 @@ public class BeerOrderLine extends BaseEntity {
     @ManyToOne
     private Beer beer;
 
-    private Integer orderQuantity = 0;
+    public Integer orderQuantity = 0;
     private Integer quantityAllocated = 0;
 }
