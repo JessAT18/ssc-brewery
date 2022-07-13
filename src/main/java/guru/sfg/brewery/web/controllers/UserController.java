@@ -1,8 +1,12 @@
 package guru.sfg.brewery.web.controllers;
 
+import com.warrenstrange.googleauth.GoogleAuthenticator;
+import com.warrenstrange.googleauth.GoogleAuthenticatorQRGenerator;
+import guru.sfg.brewery.domain.security.User;
 import guru.sfg.brewery.repositories.security.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +20,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class UserController {
     private final UserRepository userRepository;
+    private final GoogleAuthenticator googleAuthenticator;
 
     @GetMapping("/register2fa")
     private String register2fa(Model model) {
-        model.addAttribute("googleurl", "todo");
+        User user = getUser();
 
-        return "user/register/2fa";
+        String url = GoogleAuthenticatorQRGenerator.getOtpAuthURL("SFG", user.getUsername(),
+                googleAuthenticator.createCredentials(user.getUsername()));
+
+        log.debug("Google QR URL: " + url);
+
+        model.addAttribute("googleurl", url);
+
+        return "user/register2fa";
+    }
+
+    private User getUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     @PostMapping("/register2fa")
