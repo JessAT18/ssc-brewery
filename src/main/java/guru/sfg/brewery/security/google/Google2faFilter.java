@@ -1,7 +1,6 @@
 package guru.sfg.brewery.security.google;
 
 import guru.sfg.brewery.domain.security.User;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.boot.autoconfigure.security.servlet.StaticResourceRequest;
@@ -46,7 +45,7 @@ public class Google2faFilter extends GenericFilterBean {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication != null && !authenticationTrustResolver.isAnonymous(authentication)) {
+        if (authentication != null  && !authenticationTrustResolver.isAnonymous(authentication)){
             log.debug("Processing 2FA Filter");
 
             if (authentication.getPrincipal() != null && authentication.getPrincipal() instanceof User) {

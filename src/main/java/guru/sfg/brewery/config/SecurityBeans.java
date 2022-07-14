@@ -17,12 +17,12 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class SecurityBeans {
     @Bean
-    public GoogleAuthenticator googleAuthenticator(ICredentialRepository credentialRepository) {
+    public GoogleAuthenticator googleAuthenticator(ICredentialRepository credentialRepository){
         GoogleAuthenticatorConfig.GoogleAuthenticatorConfigBuilder configBuilder
                 = new GoogleAuthenticatorConfig.GoogleAuthenticatorConfigBuilder();
-
+        //Change toMillis(60) into toMillis(30)
         configBuilder
-                .setTimeStepSizeInMillis(TimeUnit.SECONDS.toMillis(60))
+                .setTimeStepSizeInMillis(TimeUnit.SECONDS.toMillis(30))
                 .setWindowSize(10)
                 .setNumberOfScratchCodes(0);
 
